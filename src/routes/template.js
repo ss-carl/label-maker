@@ -1,4 +1,4 @@
-const route = (templates) => async (ctx) => {
+const route = (templates) => async (ctx, next) => {
   if (ctx.path.startsWith('/template')) {
     const template_name = ctx.path.substring('/template'.length)
     try {
@@ -11,6 +11,8 @@ const route = (templates) => async (ctx) => {
         throw e
       }
     }
+  } else if (next) {
+    await next()
   }
 }
 
