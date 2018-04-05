@@ -8,10 +8,18 @@ const templates = async (name) => {
     error.not_found = true
     throw error
   }
+  if (name === '/overloaded') {
+    return 'overloaded'
+  }
   return 'content'
 }
 
 const pdf_maker = async (content) => {
+  if (content === 'overloaded') {
+    const error = new Error()
+    error.overloaded = true
+    throw error
+  }
   return `this_is_now_a_pdf(${content})`
 }
 
@@ -38,5 +46,12 @@ describe('the label route', function () {
       path: 'notlabel',
     }
     return route(ctx).then(() => assert(!ctx.body))
+  })
+
+  it('should 503 if the pdf_maker is overloaded', function() {
+    const ctx = {
+      path: '/label/overloaded',
+    }
+    return route(ctx).then(() => assert(ctx.status === 503))
   })
 })

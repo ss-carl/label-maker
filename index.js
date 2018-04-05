@@ -16,4 +16,3 @@ const label_route = label_route_builder(templates, pdf_maker)
 
 server.launch(template_route, label_route)
   .then(() => console.log('Server starting'))
-  .catch((err) => console.log(`Server startup failed: ${err}`))

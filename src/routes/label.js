@@ -7,6 +7,8 @@ const route_builder = (templates, pdf_maker) => async (ctx, next) => {
     } catch (e) {
       if (e.not_found) {
         ctx.status = 404
+      } else if (e.overloaded) {
+        ctx.status = 503
       } else {
         throw e
       }
