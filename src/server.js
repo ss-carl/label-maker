@@ -2,13 +2,11 @@ const koa = require('koa')
 
 const app = new koa()
 
-const launch = async () => {
+const launch = async (route_template) => {
   app.listen(3000)
-  app.on('error', f)
+  app.use(route_template)
 }
 
-function f() { console.log(arguments) }
-
-launch()
-  .then(f)
-  .catch(f)
+module.exports = {
+  launch
+}
