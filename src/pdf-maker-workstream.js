@@ -13,8 +13,13 @@ const pdf_maker_workstream_builder = (worker_pages) => {
         return reject(new Error('unexpected lack of available pages'))
       }
 
-      const hanging_resolve = (result) => {
-        resolve(result)
+      if (worker_pages.length > 0) {
+        callback()
+      } else {
+        hanging_callback = callback
+      }
+
+      const cleanup = () => {
         worker_pages.push(worker_page)
         if (hanging_callback) {
           process.nextTick(hanging_callback)
@@ -22,13 +27,15 @@ const pdf_maker_workstream_builder = (worker_pages) => {
         }
       }
 
-      process.nextTick(worker_page, content, hanging_resolve, reject)
-
-      if (worker_pages.length > 0) {
-        callback()
-      } else {
-        hanging_callback = callback
-      }
+      worker_page(content)
+        .then(result => {
+          resolve(result)
+          cleanup()
+        })
+        .catch(err => {
+          reject(err)
+          cleanup()
+        })
     }
   })
 }

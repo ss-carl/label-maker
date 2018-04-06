@@ -5,11 +5,11 @@ const write = (stream, content) => {
   return new Promise((resolve, reject) => stream.write({ content, resolve, reject }))
 }
 
-const worker_page = (content, resolve, reject) => {
+const worker_page = async (content) => {
   if (content === 'error') {
-    setImmediate(reject, new Error())
+    throw new Error()
   }
-  setImmediate(resolve, `did_work(${content})`)
+  return `did_work(${content})`
 }
 
 describe('the pdf maker workstream', function () {
@@ -42,10 +42,12 @@ describe('the pdf maker workstream', function () {
     const pages = [ worker_page, worker_page ]
     const stream = pdf_maker_workstream_builder(pages)
     return Promise.all([
-      write(stream, 'content'),
-      write(stream, 'content'),
       write(stream, 'error').catch(err => assert(err)),
-      write(stream, 'content'),
+      write(stream, 'error').catch(err => assert(err)),
+      write(stream, 'error').catch(err => assert(err)),
+      write(stream, 'error').catch(err => assert(err)),
+      write(stream, 'error').catch(err => assert(err)),
+      write(stream, 'error').catch(err => assert(err)),
     ])
   })
 })
