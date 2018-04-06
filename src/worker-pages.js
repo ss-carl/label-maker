@@ -1,4 +1,4 @@
-const worker_pages = (browser, count, worker_page_builder) => {
+const worker_pages_builder = (browser, count, worker_page_builder) => {
   const pages = []
   for (let i = 0; i < count; i++) {
     const worker_page = worker_page_builder(browser)
@@ -7,4 +7,4 @@ const worker_pages = (browser, count, worker_page_builder) => {
   return Promise.all(pages)
 }
 
-module.exports = worker_pages
+module.exports = worker_pages_builder
