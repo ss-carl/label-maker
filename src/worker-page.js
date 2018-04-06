@@ -1,10 +1,11 @@
-const worker_page_builder = (page) => (content, resolve, reject) => {
-  return page.setContent(content)
-    .then(() => page.pdf({
-
-    }))
-    .then(resolve)
-    .catch(reject)
+const worker_page_builder = (page) => async (content, resolve, reject) => {
+  try {
+    await page.setContent(content)
+    const pdf = await page.pdf({})
+    resolve(pdf)
+  } catch (e) {
+    reject(e)
+  }
 }
 
 module.exports = worker_page_builder
