@@ -1,10 +1,19 @@
-const worker_page_builder = (page) => async (content, resolve, reject) => {
-  try {
+const worker_page_builder = async (browser) => {
+  let page = await browser.newPage()
+
+  const reset = async () => {
+    page = null
+    page = await browser.newPage()
+  }
+
+  page.on('error', reset)
+
+  return async (content) => {
+    if (!page) {
+      throw new Error('page is not available')
+    }
     await page.setContent(content)
-    const pdf = await page.pdf({})
-    resolve(pdf)
-  } catch (e) {
-    reject(e)
+    return await page.pdf({})
   }
 }
 
