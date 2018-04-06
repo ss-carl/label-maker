@@ -4,6 +4,7 @@ const route_builder = (templates, pdf_maker) => async (ctx, next) => {
     try {
       const template = await templates(label)
       ctx.body = await pdf_maker(template)
+      ctx.type = 'application/pdf'
     } catch (e) {
       if (e.not_found) {
         ctx.status = 404

@@ -1,7 +1,9 @@
 const process = require('process')
 const puppeteer = require('puppeteer')
 
-const options = {}
+const options = {
+  args: ['--no-sandbox', '--disable-setuid-sandbox'] // https://github.com/Googlechrome/puppeteer/issues/290
+}
 
 function explode() {
   console.log('exploding', arguments)
