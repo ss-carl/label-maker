@@ -6,7 +6,7 @@ const pdf_maker_workstream_builder = (worker_pages) => {
 
   return new Writable({
     objectMode: true,
-    write({ content, resolve, reject }, _, callback) {
+    write({ content, options, resolve, reject }, _, callback) {
       const worker_page = worker_pages.pop()
 
       if (!worker_page) {
@@ -27,7 +27,7 @@ const pdf_maker_workstream_builder = (worker_pages) => {
         }
       }
 
-      worker_page(content)
+      worker_page(content, options)
         .then(result => {
           resolve(result)
           cleanup()

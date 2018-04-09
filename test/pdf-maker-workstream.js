@@ -2,14 +2,14 @@ const assert = require('assert')
 const pdf_maker_workstream_builder = require('../src/pdf-maker-workstream')
 
 const write = (stream, content) => {
-  return new Promise((resolve, reject) => stream.write({ content, resolve, reject }))
+  return new Promise((resolve, reject) => stream.write({ content, options: {}, resolve, reject }))
 }
 
-const worker_page = async (content) => {
+const worker_page = async (content, options) => {
   if (content === 'error') {
     throw new Error()
   }
-  return `did_work(${content})`
+  return `did_work(${content}, ${JSON.stringify(options)})`
 }
 
 describe('the pdf maker workstream', function () {
@@ -24,7 +24,7 @@ describe('the pdf maker workstream', function () {
     const pages = [ worker_page, ]
     const stream = pdf_maker_workstream_builder(pages)
     return write(stream, 'content')
-      .then(result => assert(result === 'did_work(content)'))
+      .then(result => assert(result === 'did_work(content, {})'))
   })
 
   it('should make progress even when overloaded', function () {
