@@ -8,12 +8,12 @@ const worker_page_builder = async (browser) => {
 
   page.on('error', reset)
 
-  return async (content) => {
+  return async (content, options) => {
     if (!page) {
       throw new Error('page is not available')
     }
     await page.setContent(content)
-    return await page.pdf({})
+    return await page.pdf(options)
   }
 }
 

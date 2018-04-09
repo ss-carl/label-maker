@@ -12,17 +12,23 @@ const page = {
     }
     return `worked(${content})`
   },
-  pdf: async (options) => 'thepdf',
+  pdf: async (options) => JSON.stringify(options),
   on: () => {}
 }
 
 const worker_page = worker_page_builder(browser)
 
 describe('the worker page', function() {
-  it('should process content to a pdf', function() {
+  it('should process content to a pdf without options', function() {
     return worker_page
       .then(page => page('content'))
-      .then(result => assert(result === 'thepdf'))
+      .then(result => assert(result === undefined))
+  })
+
+  it('should process content to a pdf with options', function() {
+    return worker_page
+      .then(page => page('content', { width: '6in' }))
+      .then(result => assert(result === '{"width":"6in"}'))
   })
 
   it('should handle errors from setContent', function() {
