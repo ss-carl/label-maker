@@ -2,7 +2,7 @@ const pdf_maker_builder = (pdf_maker_workstream) => {
   let workstream_full = false
   pdf_maker_workstream.on('drain', () => workstream_full = false)
 
-  return async (content) => {
+  return async (content, options) => {
     if (workstream_full) {
       const error = new Error('workstream is full')
       error.overloaded = true
@@ -10,7 +10,7 @@ const pdf_maker_builder = (pdf_maker_workstream) => {
     }
 
     return new Promise((resolve, reject) => {
-      workstream_full = !pdf_maker_workstream.write({ content, resolve, reject })
+      workstream_full = !pdf_maker_workstream.write({ content, options, resolve, reject })
     })
   }
 }

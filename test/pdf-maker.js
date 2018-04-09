@@ -6,9 +6,9 @@ const new_workstream = () => {
   return new Writable({
     objectMode: true,
     highWaterMark: 2,
-    write({ content, resolve, reject }, _, callback) {
+    write({ content, options, resolve, reject }, _, callback) {
       setImmediate(() => {
-        resolve(`made_pdf(${content})`)
+        resolve(`made_pdf(${content}, ${JSON.stringify(options)})`)
         callback()
       })
     }
@@ -29,7 +29,7 @@ describe('the pdf maker', function () {
 
   it('should eventually do work', function () {
     const pdf_maker = pdf_maker_builder(new_workstream())
-    return pdf_maker('one').then(pdf => assert(pdf === 'made_pdf(one)'))
+    return pdf_maker('one', {}).then(pdf => assert(pdf === 'made_pdf(one, {})'))
   })
 
   it('should recover after being overloaded', function () {
