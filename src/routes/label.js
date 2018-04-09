@@ -5,7 +5,7 @@ const route_builder = (templates, pdf_maker) => async (ctx, next) => {
     const label = ctx.path.substring('/label'.length)
 
     try {
-      const buffer = await read_stream(ctx.request)
+      const buffer = await read_stream(ctx.req)
       const options = buffer.length ? JSON.parse(buffer.toString()) : undefined
       const template = await templates(label, options && options.template)
       ctx.body = await pdf_maker(template, options && options.pdf)
