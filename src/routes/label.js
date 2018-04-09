@@ -1,9 +1,13 @@
+const read_stream = require('../read-stream')
+
 const route_builder = (templates, pdf_maker) => async (ctx, next) => {
   if (ctx.path.startsWith('/label')) {
     const label = ctx.path.substring('/label'.length)
     try {
-      const template = await templates(label)
-      ctx.body = await pdf_maker(template)
+      const query_buffer = await read_stream(ctx.request)
+      const query = JSON.parse(query_buffer.toString())
+      const template = await templates(label, query)
+      ctx.body = await pdf_maker(template, query)
       ctx.type = 'application/pdf'
     } catch (e) {
       if (e.not_found) {
