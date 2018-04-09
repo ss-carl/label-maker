@@ -10,7 +10,7 @@ const defaults = {
 const templates_builder = (options) => {
   options = Object.assign({}, defaults, options || {})
 
-  return async (name) => {
+  return async (name, template_data) => {
     if (!name || name.length <= 1) {
       const error = new Error('Template name is too short')
       error.not_found = true
@@ -18,7 +18,7 @@ const templates_builder = (options) => {
     }
 
     try {
-      return await ejs.renderFile(`templates${name}`, {}, options)
+      return await ejs.renderFile(`templates${name}`, template_data, options)
     } catch (e) {
       if (e.code === 'ENOENT') {
         e.not_found = true
