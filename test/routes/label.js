@@ -3,7 +3,7 @@ const fs = require('fs')
 const { Readable } = require('stream')
 const route_builder = require('../../src/routes/label')
 
-const templates = async (name, query) => {
+const templates = async (name, options) => {
   if (name === '/notfound') {
     const error = new Error()
     error.not_found = true
@@ -12,22 +12,22 @@ const templates = async (name, query) => {
   if (name === '/overloaded') {
     return 'overloaded'
   }
-  if (query.custom) {
-    return 'query'
+  if (options) {
+    return 'customized_content'
   }
   return 'content'
 }
 
-const pdf_maker = async (content, query) => {
+const pdf_maker = async (content, options) => {
   if (content === 'overloaded') {
     const error = new Error()
     error.overloaded = true
     throw error
   }
-  if (query.custom) {
+  if (options) {
     return `customized_pdf(${content})`
   }
-  return `this_is_now_a_pdf(${content})`
+  return `pdf(${content})`
 }
 
 const route = route_builder(templates, pdf_maker)
@@ -37,13 +37,21 @@ const new_ctx = (path, customized) => {
     path,
     request: new Readable({
       read() {
-        this.push('{')
-        this.push('"width": "3in",')
-        this.push('"height": "6sin"')
         if (customized) {
-          this.push(', "custom": true')
+          this.push(`
+          {
+            "pdf": {
+              "width": "3in",
+              "height": "6in"
+            },
+            "template": {
+              "special": true
+            }
+          }
+          `)
+        } else {
+          this.push('{}')
         }
-        this.push('}')
         this.push(null)
       }
     }),
@@ -53,7 +61,7 @@ const new_ctx = (path, customized) => {
 describe('the label route', function () {
   it('should return a pdf if the template exists', function () {
     const ctx = new_ctx('/label/found')
-    return route(ctx).then(() => assert(ctx.body === 'this_is_now_a_pdf(content)'))
+    return route(ctx).then(() => assert(ctx.body === 'pdf(content)'))
   })
 
   it('should 404 if the template does not exist', function () {
@@ -72,7 +80,19 @@ describe('the label route', function () {
   })
 
   it('should send the request body to templates and pdf_maker', function() {
-    const ctx = new_ctx('/label/query', true)
-    return route(ctx).then(() => assert(ctx.body === 'customized_pdf(query)'))
+    const ctx = new_ctx('/label/found', true)
+    return route(ctx).then(() => assert(ctx.body === 'customized_pdf(customized_content)'))
+  })
+
+  it('should should not break if there is no request body', function() {
+    const ctx = {
+      path: '/label/found',
+      request: new Readable({
+        read() {
+          this.push(null)
+        }
+      })
+    }
+    return route(ctx).then(() => assert(ctx.body === 'pdf(content)'))
   })
 })
