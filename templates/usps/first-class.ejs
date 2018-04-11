@@ -1,0 +1,206 @@
+<html>
+    <head>
+        <style>
+            body {
+                margin: 0;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            #big-letter {
+                position: absolute;
+                left: 0px;
+                top: -10px;
+                width: 90px;
+                height: 100px;
+                vertical-align: middle;
+                text-align: center;
+                border-right: solid 1px;
+                font-weight: bold;
+                font-size: 95px;
+                text-align: center;
+            }
+            #head {
+                position: absolute;
+                left: 0px;
+                top: 0px;
+                width: 400px;
+                height: 90px;
+                border-bottom: solid 1px black;
+            }
+            #head-1 {
+                position: absolute;
+                left: 95px;
+                top: 0px;
+                width: 205px;
+                font-size: 10px;
+            }
+            #head-1-1 {
+                font-weight: bold;
+            }
+            #head-2 {
+                position: absolute;
+                left: 90px;
+                top: 0px;
+                font-size: 10px;
+                text-align: right;
+                width: 307px;
+            }
+            #head-3 {
+                position: absolute;
+                left: 95px;
+                top: 5px;
+            }
+            #barcode-1 {
+                width: 140px;
+            }
+            #head-4 {
+                position: absolute;
+                left: 344px;
+                top: 50px;
+                font-size: 10px;
+            }
+            #head-4-1 {
+                font-weight: bold;
+            }
+            #head-4-2 {
+                font-weight: bold;
+                padding-left: 8px;
+            }
+            #title {
+                position: absolute;
+                left: 0px;
+                top: 90px;
+                font-size: 30px;
+                text-align: center;
+                width: 400px;
+                padding: 5px 0 5px 0;
+                border-bottom: solid 1px;
+            }
+            #ship-from {
+                position: absolute;
+                left: 18px;
+                top: 140px;
+            }
+            #ship-to-label {
+                position: absolute;                
+                left: 18px;
+                top: 260px;
+                width: 0px;
+            }
+            #ship-to {
+                position: absolute;                
+                left: 68px;
+                top: 260px;
+            }
+            #bbb-1 {
+                position: absolute;
+                top: 360px;
+                border-bottom: 8px solid black;
+                width: 400px;
+            }
+            #tracking-header {
+                position: absolute;
+                width: 400px;
+                top: 381px;
+                text-align: center;
+            }
+            #tracking-barcode {
+                position: absolute;
+                top: 370px;
+            }
+            #barcode-2 {
+                width: 350px;
+                padding-left: 23px;
+            }
+            #bbb-2 {
+                position: absolute;
+                top: 490px;
+                border-bottom: 8px solid black;
+                width: 400px;
+            }
+            #ref {
+                position: absolute;
+                top: 510px;
+                width: 300px;
+                padding-left: 100px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="head">
+            <div id="big-letter">
+                F
+            </div>
+                
+            <div id="head-1">
+                <div id="head-1-1">US POSTAGE &amp; FEES PAID</div>
+                <div>4 OZ FIRST-CLASS PARCEL RATE</div>
+                <div>NO SURCHARGE</div>
+                <div>COMMERCIAL BASE PRICING</div>
+            </div>
+            
+            <div id="head-2">
+                <div>062S0009564655</div>
+                <div>7002256</div>
+                <div>FROM 78756</div>
+            </div>
+            
+            <div id="head-3">
+                <svg id="barcode-1"></svg>
+            </div>
+
+            <div id="head-4">
+                <div id="head-4-1">stamps</div>
+                <div id="head-4-2">endicia</div>
+                <div id="head-4-3">04/09/2018</div>
+            </div>
+        </div>
+        
+        <div id="title">
+            USPS FIRST CLASS MAIL
+        </div>
+
+        <div id="ship-from">
+            <div>Ashley Lane Return</div>
+            <div>ShipStation Return</div>
+            <div>3800 N Lamar Blvd. #220</div>
+            <div>Austin TX 78756</div>
+        </div>
+
+        <div id="ship-to-label">
+            SHIP TO:
+        </div>
+
+        <div id="ship-to">
+            <div>JONATHAN LANGE</div>
+            <div>1225 NE 59TH AVE</div>
+            <div>PORTLAND OR 97213-4203</div>
+        </div>
+
+        <div id="bbb-1">
+        </div>
+
+        <div id="tracking-header">
+            USPS TRACKING #
+        </div>
+        
+        <div id="tracking-barcode">
+            <svg id="barcode-2"></svg>
+        </div>
+
+        <div id="bbb-2">
+        </div>
+
+        <div id="ref">
+            <div>AAAAHHHHHH!!!!!!!!!!</div>
+            <div>STOP</div>
+            <div>WHY</div>
+        </div>
+
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/jsbarcode/3.6.0/JsBarcode.all.min.js"></script>
+        <script type="text/javascript">
+            JsBarcode(document.getElementById("barcode-1"), "ihafnoideawutimdoing");
+            JsBarcode(document.getElementById("barcode-2"), "9400 1116 9900 0108 1122 54");
+            document.write('<span id="done"></span>')
+        </script>
+    </body>
+</html>
